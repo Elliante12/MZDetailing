@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="ambient ambient-1"></div>
+  <div class="ambient ambient-2"></div>
+  <div class="grid-overlay"></div>
+  <div class="noise"></div>
+
+  <nav>
+    <div class="logo">MZ DETAILING</div>
+      <div class="menu">
+      <div> +1 (647) 234-1780</div>
+      <button id="EXPERIENCE">EXPERIENCE</button>
+      <button id="BRAND">BRAND</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <video autoplay muted loop>
+      <source src="car_driving_demo.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-text">
+      <h1>NOT JUST A DETAIL</h1>
+      <div class="hero-line"></div>
+      <p>Handled with precision and care.</p>
+      <h3> Cars Detailed: </h3>
+      <h3 class="counter" data-target="100">0</h3>
+    </div>
+  </section>
+
+  <section class="statement">
+
+  <div class="statement-content">
+    <h2>
+      Precision detailing engineered
+      for every surface.
+    </h2>
+    
+    <div class="ba-slider" id="baSlider">
+
+      <div class="layer before">
+        <img src="before.jpg">
+        <span>Before</span>
+      </div>
+
+      <div class="layer after">
+        <img src="after.jpg">
+        <span>After</span>
+      </div>
+
+      <div class="handle"></div>
+
+    </div>
+  </div>
+
+</section>
+
+  <section class="selector">
+
+  <section class="car-selection-wrapper">
+
+    <div class="car-selection-panel">
+
+      <!-- LEFT WEDGE -->
+      <div class="car-selection-left">
+        <h2>CAR SELECTION</h2>
+        <p>Choose your vehicle class</p>
+      </div>
+
+    <!-- RIGHT CONTENT -->
+      <div class="car-selection-right">
+
+        <div class="car-selection">
+
+          <div class="vehicle-menu">
+            <button>Sedan</button>
+            <button>SUV</button>
+            <button>Minivan</button>
+            <button>Truck</button>
+            <button>Other</button>
+          </div>
+
+          <div class="vehicle-preview">
+            <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+            <model-viewer
+              src="./models/sedan.glb"
+              auto-rotate
+              camera-controls
+              shadow-intensity="1"
+              exposure="1.2"
+              environment-image="neutral"
+              camera-orbit="0deg 75deg 3m"
+              style="width: 100%; height: 500px; background: #111;">
+            </model-viewer>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+  
+
+  <!-- =========================
+  PRICING PACKAGES
+  ========================== -->
+    <div class="vehicles">
+
+      <section class="models">
+
+        <button class="card" id="EXTERIOR">
+          <div class="card-content">
+            <span class="label">Exterior</span>
+            <span class="sub">Detailing & finish</span>
+            <h2 class="price" data-service="Exterior">$50</h2>
+          </div>
+
+          <div class="card-steps">
+            <div>Included:</div>
+            <div>- Wheels clean & tire shine</div>
+            <div>- Foam cannon pre-wash to soften dirt</div>
+            <div>- Full body contact wash</div>
+            <div>- Detailing on emblems & crevices</div>
+            <div>- Sealant protection + glass</div>
+          </div>
+        </button>
+
+        <button class="card" id="FULL VEHICLE">
+          <div class="popular-tag">Most Popular ⭐</div>
+
+          <div class="card-content">
+            <span class="label">Full Vehicle</span>
+            <span class="sub">Complete treatment</span>
+            <h2 class="price" data-service="FULL VEHICLE">$200</h2>
+          </div>
+
+          <div class="card-steps">
+            <div>Included:</div>
+            <div>- Everything in both Interior & Exterior</div>
+            <div>- Interior deep clean</div>
+            <div>- Wheels + tires restored</div>
+            <div>- Full protection finish</div>
+          </div>
+        </button>
+
+        <button class="card" id="INTERIOR">
+          <div class="card-content">
+            <span class="label">Interior</span>
+            <span class="sub">Deep clean & restore</span>
+            <h2 class="price" data-service="Interior">$150</h2>
+          </div>
+
+          <div class="card-steps">
+            <div>Included:</div>
+            <div>- Full interior vacuum</div>
+            <div>- Compressed air cleaning for tight areas</div>
+            <div>- Steam clean</div>
+            <div>- Mats + door jambs</div>
+            <div>- Leather conditioning</div>
+            <div>- Salt stain removal</div>
+            <div>- Seat extraction & shampooing</div>
+          </div>
+        </button>
+
+      </section>
+
+    </div>
+
+  </section>
+
+  <section class="contact">
+    <div class="contact-box">
+      <p class="eyebrow"> BOOKING & INQUIRIES</p>
+      <h2>Contact Us</h2>
+    
+      <p class="contact-text">
+        Reach out for appointments, pricing, or custom detailing packages.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:info@mzdetailing.com" class="contact-item">
+          <span> Email</span>
+          info@mzdetailing.com
+        </a>
+
+        <a href="tel:+1234567890" class="contact-item">
+          <span> Call </span>
+          +1 647 234 1780\
+        </a>
+
+        <a href="tel:+1234567890" class="contact-item">
+          <span> Text </span>
+          +1 647 234 1780
+        </a>
+      </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
