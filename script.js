@@ -1,21 +1,75 @@
 // ── VEHICLE MODELS ───────────────────────────────────────
-// Swap these .glb paths for your actual model files
 const vehicleModels = {
   Sedan:   "models/2020_bmw_m340i_xdrive.glb",
   SUV:     "models/2016_bmw_x5_m.glb",
   Minivan: "models/2023_toyota_granvia_2.5l_189hp_l4_e-cvt_hybrid.glb",
   Truck:   "models/2021_ram_1500_trx.glb",
-  Other:   "models/2022_tesla_model_3.glb",
+  Other:   null,
 };
 
 // ── PRICING ───────────────────────────────────────────────
 const pricing = {
-  Sedan:   {exterior: 50,  interior: 150, full: 200},
-  SUV:     {exterior: 70,  interior: 180, full: 230},
-  Minivan: {exterior: 80,  interior: 200, full: 300},
-  Truck:   {exterior: 80,  interior: 200, full: 300},
-  Other:   {exterior: 60,  interior: 160, full: 210},
+  Sedan:   { exterior: 50,  interior: 150, "full vehicle": 200 },
+  SUV:     { exterior: 70,  interior: 180, "full vehicle": 250 },
+  Minivan: { exterior: 80,  interior: 200, "full vehicle": 300 },
+  Truck:   { exterior: 80,  interior: 200, "full vehicle": 300 },
+  Other:   { exterior: 60,  interior: 160, "full vehicle": 210 },
 };
+
+// ── INJECT POPUP HTML ─────────────────────────────────────
+const popupHTML = `
+<div class="other-popup" id="otherPopup" aria-modal="true" role="dialog">
+  <div class="other-popup-backdrop" id="popupBackdrop"></div>
+  <div class="other-popup-box">
+    <button class="other-popup-close" id="popupClose" aria-label="Close">✕</button>
+
+    <div class="other-popup-eyebrow">CUSTOM VEHICLE</div>
+    <h2 class="other-popup-title">Something<br><em>different?</em></h2>
+    <p class="other-popup-body">
+      Not every vehicle fits a category — and that's fine.
+      Reach out and we'll put together a custom quote for your specific ride.
+    </p>
+
+    <div class="other-popup-actions">
+      <a href="tel:+16472341780" class="other-popup-btn primary">
+        <span class="other-popup-btn-label">CALL US</span>
+        <span class="other-popup-btn-sub">+1 647 234 1780</span>
+      </a>
+      <a href="sms:+16472341780" class="other-popup-btn secondary">
+        <span class="other-popup-btn-label">TEXT US</span>
+        <span class="other-popup-btn-sub">+1 647 234 1780</span>
+      </a>
+      <a href="mailto:mzdetail7@gmail.com" class="other-popup-btn secondary">
+        <span class="other-popup-btn-label">EMAIL US</span>
+        <span class="other-popup-btn-sub">mzdetail7@gmail.com</span>
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+document.body.insertAdjacentHTML("beforeend", popupHTML);
+
+// ── POPUP LOGIC ───────────────────────────────────────────
+const popup   = document.getElementById("otherPopup");
+const backdrop = document.getElementById("popupBackdrop");
+const closeBtn = document.getElementById("popupClose");
+
+function openPopup() {
+  popup.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closePopup() {
+  popup.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+backdrop?.addEventListener("click", closePopup);
+closeBtn?.addEventListener("click", closePopup);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closePopup();
+});
 
 // ── CARD SCROLL REVEAL ────────────────────────────────────
 const cards = document.querySelectorAll(".card");
@@ -48,8 +102,8 @@ cards.forEach(card => {
       scale(1.03)
     `;
 
-    const px = ((x / rect.width) * 100);
-    const py = ((y / rect.height) * 100);
+    const px = (x / rect.width) * 100;
+    const py = (y / rect.height) * 100;
     card.style.setProperty("--mx", `${px}%`);
     card.style.setProperty("--my", `${py}%`);
   });
@@ -111,15 +165,14 @@ slider?.addEventListener("mousedown", (e) => { dragging = true; updateSlider(e.c
 window.addEventListener("mousemove",  (e) => { if (dragging) updateSlider(e.clientX); });
 window.addEventListener("mouseup",    ()  => { dragging = false; });
 
-// Touch support for slider
 slider?.addEventListener("touchstart", (e) => { dragging = true; updateSlider(e.touches[0].clientX); });
 window.addEventListener("touchmove",   (e) => { if (dragging) updateSlider(e.touches[0].clientX); });
 window.addEventListener("touchend",    ()  => { dragging = false; });
 
 function animateSlider() {
   sliderCurrent += (sliderTarget - sliderCurrent) * 0.15;
-  if (after)  after.style.clipPath  = `inset(0 ${100 - sliderCurrent}% 0 0)`;
-  if (handle) handle.style.left     = `${sliderCurrent}%`;
+  if (after)  after.style.clipPath = `inset(0 ${100 - sliderCurrent}% 0 0)`;
+  if (handle) handle.style.left    = `${sliderCurrent}%`;
   requestAnimationFrame(animateSlider);
 }
 animateSlider();
@@ -152,22 +205,24 @@ function swapModel(vehicle) {
   if (!viewer) return;
 
   const src = vehicleModels[vehicle];
-  if (!src) return;
 
-  // Fade out
+  // No model for this type — show popup instead
+  if (!src) {
+    openPopup();
+    return;
+  }
+
   viewer.style.opacity = "0";
 
   setTimeout(() => {
     viewer.src = src;
 
-    // Fade back in once model is loaded, or after fallback delay
     const onLoad = () => {
       viewer.style.opacity = "1";
       viewer.removeEventListener("load", onLoad);
     };
     viewer.addEventListener("load", onLoad);
 
-    // Fallback in case load event doesn't fire
     setTimeout(() => { viewer.style.opacity = "1"; }, 1500);
   }, 300);
 }
