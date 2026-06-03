@@ -3,7 +3,7 @@
 const vehicleModels = {
   Sedan:   "models/2020_bmw_m340i_xdrive.glb",
   SUV:     "models/2016_bmw_x5_m.glb",
-  Minivan: "models/2023_toyota_granvia.glb",
+  Minivan: "models/2023_toyota_granvia_2.5l_189hp_l4_e-cvt_hybrid.glb",
   Truck:   "models/2021_ram_1500_trx.glb",
   Other:   "models/2022_tesla_model_3.glb",
 };
