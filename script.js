@@ -13,7 +13,6 @@ const pricing = {
   SUV:     { exterior: 70,  interior: 180, "full vehicle": 250 },
   Minivan: { exterior: 80,  interior: 200, "full vehicle": 300 },
   Truck:   { exterior: 80,  interior: 200, "full vehicle": 300 },
-  Other:   { exterior: 60,  interior: 160, "full vehicle": 210 },
 };
 
 // ── INJECT POPUP HTML ─────────────────────────────────────
