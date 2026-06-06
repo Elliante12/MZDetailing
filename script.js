@@ -591,11 +591,29 @@ document.addEventListener("keydown", (e) => {
 bookingForm?.addEventListener("submit", () => {
   bookingSubmit.classList.add("loading");
 
-  setTimeout(() => {
-    bookingForm.style.display = "none";
-    bookingSuccess.classList.add("active");
-    bookingSubmit.classList.remove("loading");
-  }, 800);
+  const templateParams = {
+    name:    document.getElementById("bName").value,
+    email:   document.getElementById("bEmail").value,
+    phone:   document.getElementById("bPhone").value,
+    date:    document.getElementById("bDate").value,
+    time:    document.getElementById("bTime").value,
+    vehicle: document.getElementById("bVehicle").value,
+    service: document.getElementById("bService").value,
+    address: document.getElementById("bAddress").value,
+    notes:   document.getElementById("bNotes").value,
+  };
+
+  emailjs.send("service_xa70num", "template_ii0r0ri", templateParams)
+    .then(() => {
+      bookingForm.style.display = "none";
+      bookingSuccess.classList.add("active");
+      bookingSubmit.classList.remove("loading");
+    })
+    .catch((err) => {
+      console.error("EmailJS error:", err);
+      bookingSubmit.classList.remove("loading");
+      alert("Something went wrong. Please call us directly.");
+    });
 });
 
 // Clicking a pricing card opens booking with service pre-filled
