@@ -464,16 +464,23 @@ const bookingHTML = `
             <input type="text" id="bName" placeholder="John Smith" autocomplete="name" required />
           </div>
           <div class="booking-field">
-            <label for="bPhone">Phone Number</label>
-            <input type="tel" id="bPhone" placeholder="+1 (647) 000-0000" autocomplete="tel" required />
+            <label for="bEmail">Email Address</label>
+            <input type="email" id="bEmail" placeholder="john@example.com" autocomplete="email" required />
           </div>
         </div>
 
         <div class="booking-row">
           <div class="booking-field">
+            <label for="bPhone">Phone Number</label>
+            <input type="tel" id="bPhone" placeholder="+1 (647) 000-0000" autocomplete="tel" required />
+          </div>
+          <div class="booking-field">
             <label for="bDate">Preferred Date</label>
             <input type="date" id="bDate" required />
           </div>
+        </div>
+
+        <div class="booking-row">
           <div class="booking-field">
             <label for="bTime">Preferred Time</label>
             <select id="bTime" required>
