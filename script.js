@@ -1,7 +1,7 @@
 // ── PAGE LOADER ───────────────────────────────────────────
 // To use a logo PNG instead of text:
 //   set LOADER_USE_IMAGE = true
-//   set LOADER_IMAGE_SRC to the file e.g. "images/logo.png"
+//   set LOADER_IMAGE_SRC to your file e.g. "images/logo.png"
 // To use text: keep LOADER_USE_IMAGE = false
 
 const LOADER_USE_IMAGE = false;
@@ -53,10 +53,9 @@ const vehicleModels = {
 // ── PRICING ───────────────────────────────────────────────
 const pricing = {
   Sedan:   { exterior: 50,  interior: 150, "full vehicle": 200 },
-  SUV:     { exterior: 70,  interior: 180, "full vehicle": 250 },
-  Minivan: { exterior: 80,  interior: 200, "full vehicle": 300 },
-  Truck:   { exterior: 80,  interior: 200, "full vehicle": 300 },
-  Other:   { exterior: 60,  interior: 160, "full vehicle": 210 },
+  SUV:     { exterior: 70,  interior: 150, "full vehicle": 200 },
+  Minivan: { exterior: 80,  interior: 180, "full vehicle": 220 },
+  Truck:   { exterior: 80,  interior: 150, "full vehicle": 250 },
 };
 
 // ── INJECT POPUP HTML ─────────────────────────────────────
@@ -318,10 +317,14 @@ bookBtn.addEventListener("click", () => {
 // ── GALLERY ───────────────────────────────────────────────
 // Drop your image paths in here — add as many as you want
 const galleryImages = [
-  "car-gallery.001.jpg",
-  "car-gallery.002.jpg",
-  "car-gallery.003.jpg",
-  "car-gallery.004.jpg",
+  "gallery/img1.jpg",
+  "gallery/img2.jpg",
+  "gallery/img3.jpg",
+  "gallery/img4.jpg",
+  "gallery/img5.jpg",
+  "gallery/img6.jpg",
+  "gallery/img7.jpg",
+  "gallery/img8.jpg",
 ];
 
 // Shuffle
@@ -512,6 +515,11 @@ const bookingHTML = `
         </div>
 
         <div class="booking-field booking-field--full">
+          <label for="bAddress">Service Address</label>
+          <input type="text" id="bAddress" placeholder="123 Main St, Richmond Hill, ON" autocomplete="street-address" required />
+        </div>
+
+        <div class="booking-field booking-field--full">
           <label for="bNotes">Additional Notes <span class="optional">(optional)</span></label>
           <textarea id="bNotes" placeholder="Pet hair, stains, specific concerns..." rows="3"></textarea>
         </div>
@@ -572,31 +580,15 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeBooking();
 });
 
-// Submit — shows success state 
+// Submit — shows success state (wire up to your backend/email here)
 bookingForm?.addEventListener("submit", () => {
   bookingSubmit.classList.add("loading");
 
-  const templateParams = {
-    name:    document.getElementById("bName").value,
-    phone:   document.getElementById("bPhone").value,
-    date:    document.getElementById("bDate").value,
-    time:    document.getElementById("bTime").value,
-    vehicle: document.getElementById("bVehicle").value,
-    service: document.getElementById("bService").value,
-    notes:   document.getElementById("bNotes").value,
-  };
-
-  emailjs.send("service_xa70num", "template_ii0r0ri", templateParams)
-    .then(() => {
-      bookingForm.style.display = "none";
-      bookingSuccess.classList.add("active");
-      bookingSubmit.classList.remove("loading");
-    })
-    .catch((err) => {
-      console.error("EmailJS error:", err);
-      bookingSubmit.classList.remove("loading");
-      alert("Something went wrong. Please call us directly.");
-    });
+  setTimeout(() => {
+    bookingForm.style.display = "none";
+    bookingSuccess.classList.add("active");
+    bookingSubmit.classList.remove("loading");
+  }, 800);
 });
 
 // Clicking a pricing card opens booking with service pre-filled
