@@ -165,11 +165,11 @@ window.addEventListener("scroll", () => {
 
 // ── NAV BUTTONS ───────────────────────────────────────────
 document.getElementById("EXPERIENCE")?.addEventListener("click", () => {
-  document.querySelector(".statement")?.scrollIntoView({ behavior: "smooth" });
+  document.querySelector(".testimonials")?.scrollIntoView({ behavior: "smooth" });
 });
 
 document.getElementById("BRAND")?.addEventListener("click", () => {
-  document.querySelector(".contact")?.scrollIntoView({ behavior: "smooth" });
+  window.location.href = "about.html";
 });
 
 // ── COUNTER ───────────────────────────────────────────────
@@ -254,18 +254,26 @@ function swapModel(vehicle) {
     return;
   }
 
+  const preview = document.querySelector(".vehicle-preview");
+
   viewer.style.opacity = "0";
+  preview?.classList.add("loading");
 
   setTimeout(() => {
     viewer.src = src;
 
     const onLoad = () => {
       viewer.style.opacity = "1";
+      preview?.classList.remove("loading");
       viewer.removeEventListener("load", onLoad);
     };
     viewer.addEventListener("load", onLoad);
 
-    setTimeout(() => { viewer.style.opacity = "1"; }, 1500);
+    // Fallback
+    setTimeout(() => {
+      viewer.style.opacity = "1";
+      preview?.classList.remove("loading");
+    }, 3000);
   }, 300);
 }
 
@@ -591,29 +599,11 @@ document.addEventListener("keydown", (e) => {
 bookingForm?.addEventListener("submit", () => {
   bookingSubmit.classList.add("loading");
 
-  const templateParams = {
-    name:    document.getElementById("bName").value,
-    email:   document.getElementById("bEmail").value,
-    phone:   document.getElementById("bPhone").value,
-    date:    document.getElementById("bDate").value,
-    time:    document.getElementById("bTime").value,
-    vehicle: document.getElementById("bVehicle").value,
-    service: document.getElementById("bService").value,
-    address: document.getElementById("bAddress").value,
-    notes:   document.getElementById("bNotes").value,
-  };
-
-  emailjs.send("service_xa70num", "template_ii0r0ri", templateParams)
-    .then(() => {
-      bookingForm.style.display = "none";
-      bookingSuccess.classList.add("active");
-      bookingSubmit.classList.remove("loading");
-    })
-    .catch((err) => {
-      console.error("EmailJS error:", err);
-      bookingSubmit.classList.remove("loading");
-      alert("Something went wrong. Please call us directly.");
-    });
+  setTimeout(() => {
+    bookingForm.style.display = "none";
+    bookingSuccess.classList.add("active");
+    bookingSubmit.classList.remove("loading");
+  }, 800);
 });
 
 // Clicking a pricing card opens booking with service pre-filled
@@ -630,3 +620,196 @@ document.getElementById("bookNow")?.addEventListener("click", (e) => {
   openBooking(selectedVehicle);
   // Remove the scroll-to-contact behaviour — booking overlay takes over
 });
+
+// ── TESTIMONIALS ──────────────────────────────────────────
+// Add your real ones here
+const testimonials = [
+  {
+    quote: "Honestly didn't think my seats could look this clean. Pulled up and it looked brand new inside.",
+    name: "Jordan M.",
+    vehicle: "2019 Honda CR-V"
+  },
+  {
+    quote: "Showed up on time, did an incredible job on the exterior. The paint looked like it just rolled off the lot.",
+    name: "David K.",
+    vehicle: "2021 BMW 3 Series"
+  },
+  {
+    quote: "Had salt stains all over the floor mats from winter. They got every single one out. Highly recommend.",
+    name: "Sarah T.",
+    vehicle: "2020 Toyota RAV4"
+  },
+  {
+    quote: "Best money I've spent on my truck. Full detail top to bottom, came to my driveway. Easy.",
+    name: "Marcus R.",
+    vehicle: "2021 RAM 1500"
+  },
+];
+
+const testimonialsHTML = `
+<section class="testimonials" id="testimonials">
+  <div class="testimonials-inner">
+    <div class="testimonials-header">
+      <span class="testimonials-eyebrow">WHAT THEY SAY</span>
+      <h2 class="testimonials-title">Clients<br><em>trust us.</em></h2>
+    </div>
+    <div class="testimonials-stage">
+      <div class="testimonials-track" id="testimonialsTrack">
+        ${testimonials.map((t, i) => `
+          <div class="testimonial-card ${i === 0 ? 'active' : ''}">
+            <div class="testimonial-quote">"${t.quote}"</div>
+            <div class="testimonial-author">
+              <span class="testimonial-name">${t.name}</span>
+              <span class="testimonial-vehicle">${t.vehicle}</span>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+      <div class="testimonials-controls">
+        <button class="testimonials-prev" id="testimonialsPrev" aria-label="Previous">←</button>
+        <div class="testimonials-dots" id="testimonialsDots">
+          ${testimonials.map((_, i) => `
+            <button class="testimonial-dot ${i === 0 ? 'active' : ''}" data-index="${i}" aria-label="Testimonial ${i + 1}"></button>
+          `).join("")}
+        </div>
+        <button class="testimonials-next" id="testimonialsNext" aria-label="Next">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+`;
+
+// Insert before gallery
+document.getElementById("gallery")?.insertAdjacentHTML("beforebegin", testimonialsHTML);
+
+// ── TESTIMONIALS LOGIC ────────────────────────────────────
+let currentTestimonial = 0;
+let testimonialTimer;
+
+function goToTestimonial(index) {
+  const cards = document.querySelectorAll(".testimonial-card");
+  const dots  = document.querySelectorAll(".testimonial-dot");
+
+  cards.forEach(c => c.classList.remove("active", "exit"));
+  dots.forEach(d => d.classList.remove("active"));
+
+  cards[index]?.classList.add("active");
+  dots[index]?.classList.add("active");
+  currentTestimonial = index;
+}
+
+function nextTestimonial() {
+  goToTestimonial((currentTestimonial + 1) % testimonials.length);
+}
+
+function prevTestimonial() {
+  goToTestimonial((currentTestimonial - 1 + testimonials.length) % testimonials.length);
+}
+
+function startAutoPlay() {
+  testimonialTimer = setInterval(nextTestimonial, 5000);
+}
+
+function resetAutoPlay() {
+  clearInterval(testimonialTimer);
+  startAutoPlay();
+}
+
+document.getElementById("testimonialsNext")?.addEventListener("click", () => { nextTestimonial(); resetAutoPlay(); });
+document.getElementById("testimonialsPrev")?.addEventListener("click", () => { prevTestimonial(); resetAutoPlay(); });
+
+document.querySelectorAll(".testimonial-dot").forEach(dot => {
+  dot.addEventListener("click", () => {
+    goToTestimonial(+dot.dataset.index);
+    resetAutoPlay();
+  });
+});
+
+startAutoPlay();
+
+// ── FORM VALIDATION ───────────────────────────────────────
+const validatedFields = ["bName", "bEmail", "bPhone", "bDate", "bTime", "bVehicle", "bService", "bAddress"];
+
+function validateField(id) {
+  const el = document.getElementById(id);
+  if (!el) return true;
+
+  const wrapper = el.closest(".booking-field");
+  const val = el.value.trim();
+  let error = "";
+
+  if (!val) {
+    error = "This field is required";
+  } else if (id === "bEmail" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+    error = "Enter a valid email address";
+  } else if (id === "bPhone" && !/^[\d\s\+\-\(\)]{7,}$/.test(val)) {
+    error = "Enter a valid phone number";
+  }
+
+  // Remove existing error
+  wrapper?.querySelector(".field-error")?.remove();
+  el.classList.remove("invalid");
+
+  if (error) {
+    el.classList.add("invalid");
+    const msg = document.createElement("span");
+    msg.className = "field-error";
+    msg.textContent = error;
+    wrapper?.appendChild(msg);
+    return false;
+  }
+
+  el.classList.add("valid");
+  return true;
+}
+
+// Live validation on blur
+validatedFields.forEach(id => {
+  const el = document.getElementById(id);
+  el?.addEventListener("blur", () => validateField(id));
+  el?.addEventListener("input", () => {
+    if (el.classList.contains("invalid")) validateField(id);
+  });
+});
+
+// Validate all on submit — replace the existing submit handler
+const existingForm = document.getElementById("bookingForm");
+if (existingForm) {
+  existingForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const allValid = validatedFields.map(id => validateField(id)).every(Boolean);
+    if (!allValid) {
+      // Scroll to first invalid field
+      const firstInvalid = existingForm.querySelector(".invalid");
+      firstInvalid?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    bookingSubmit.classList.add("loading");
+
+    const templateParams = {
+      name:    document.getElementById("bName").value,
+      email:   document.getElementById("bEmail").value,
+      phone:   document.getElementById("bPhone").value,
+      date:    document.getElementById("bDate").value,
+      time:    document.getElementById("bTime").value,
+      vehicle: document.getElementById("bVehicle").value,
+      service: document.getElementById("bService").value,
+      address: document.getElementById("bAddress").value,
+      notes:   document.getElementById("bNotes").value,
+    };
+
+    emailjs.send("service_xa70num", "template_ii0r0ri", templateParams)
+      .then(() => {
+        bookingForm.style.display = "none";
+        bookingSuccess.classList.add("active");
+        bookingSubmit.classList.remove("loading");
+      })
+      .catch((err) => {
+        console.error("EmailJS error:", err);
+        bookingSubmit.classList.remove("loading");
+        alert("Something went wrong. Please call us directly.");
+      });
+  });
+}
