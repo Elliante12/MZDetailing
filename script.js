@@ -345,7 +345,7 @@ const galleryHTML = `
 <section class="gallery" id="gallery">
   <div class="gallery-header">
     <span class="gallery-eyebrow">OUR WORK</span>
-    <h2 class="gallery-title">Results<br><em>speak.</em></h2>
+    <h2 class="gallery-title">Results<br><em>speak for themselves.</em></h2>
   </div>
   <div class="gallery-track-wrap">
     <div class="gallery-track" id="galleryTrack">
