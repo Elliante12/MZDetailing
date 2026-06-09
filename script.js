@@ -46,7 +46,6 @@ const vehicleModels = {
   Sedan:   "models/2020_bmw_m340i_xdrive.glb",
   SUV:     "models/2016_bmw_x5_m.glb",
   Minivan: "models/2023_toyota_granvia_2.5l_189hp_l4_e-cvt_hybrid.glb",
-  Van:     "models/mercedes_benz_sprinter_2006.glb",
   Truck:   "models/2021_ram_1500_trx.glb",
   Other:   null,
 };
@@ -54,10 +53,9 @@ const vehicleModels = {
 // ── PRICING ───────────────────────────────────────────────
 const pricing = {
   Sedan:   { exterior: 50,  interior: 150, "full vehicle": 200 },
-  SUV:     { exterior: 70,  interior: 180, "full vehicle": 200 },
-  Minivan: { exterior: 80,  interior: 250, "full vehicle": 300 },
-  Van:     { exterior: 80,  interior: 180, "full vehicle": 300 },
-  Truck:   { exterior: 80,  interior: 150, "full vehicle": 300 },
+  SUV:     { exterior: 50,  interior: 200, "full vehicle": 250 },
+  Minivan: { exterior: 70,  interior: 250, "full vehicle": 320 },
+  Truck:   { exterior: 70,  interior: 200, "full vehicle": 270 },
 };
 
 // ── INJECT POPUP HTML ─────────────────────────────────────
@@ -526,7 +524,6 @@ const bookingHTML = `
               <option>Sedan</option>
               <option>SUV</option>
               <option>Minivan</option>
-              <option>Van</option>
               <option>Truck</option>
               <option>Other</option>
             </select>
