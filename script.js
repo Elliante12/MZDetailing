@@ -46,6 +46,7 @@ const vehicleModels = {
   Sedan:   "models/2020_bmw_m340i_xdrive.glb",
   SUV:     "models/2016_bmw_x5_m.glb",
   Minivan: "models/2023_toyota_granvia_2.5l_189hp_l4_e-cvt_hybrid.glb",
+  Van:     "models/mercedes_benz_sprinter_2006.glb",
   Truck:   "models/2021_ram_1500_trx.glb",
   Other:   null,
 };
@@ -53,9 +54,10 @@ const vehicleModels = {
 // ── PRICING ───────────────────────────────────────────────
 const pricing = {
   Sedan:   { exterior: 50,  interior: 150, "full vehicle": 200 },
-  SUV:     { exterior: 70,  interior: 150, "full vehicle": 200 },
-  Minivan: { exterior: 80,  interior: 180, "full vehicle": 220 },
-  Truck:   { exterior: 80,  interior: 150, "full vehicle": 250 },
+  SUV:     { exterior: 70,  interior: 180, "full vehicle": 200 },
+  Minivan: { exterior: 80,  interior: 250, "full vehicle": 300 },
+  Van:     { exterior: 80,  interior: 180, "full vehicle": 300 },
+  Truck:   { exterior: 80,  interior: 150, "full vehicle": 300 },
 };
 
 // ── INJECT POPUP HTML ─────────────────────────────────────
@@ -297,6 +299,16 @@ if (initial) {
   swapModel(selectedVehicle);
 }
 
+// ── FIX MODEL VIEWER TOUCH SCROLL ────────────────────────
+// Disable camera-controls on touch devices so page scroll works normally
+if (viewer) {
+  const isTouchDevice = window.matchMedia("(hover: none)").matches;
+  if (isTouchDevice) {
+    viewer.removeAttribute("camera-controls");
+    viewer.style.pointerEvents = "none";
+  }
+}
+
 // ── BOOK NOW BUTTON ───────────────────────────────────────
 const bookBtnHTML = `
 <button class="book-now" id="bookNow" aria-label="Book Now">
@@ -345,7 +357,7 @@ const galleryHTML = `
 <section class="gallery" id="gallery">
   <div class="gallery-header">
     <span class="gallery-eyebrow">OUR WORK</span>
-    <h2 class="gallery-title">Results<br><em>speak for themselves.</em></h2>
+    <h2 class="gallery-title">Results<br><em>speak.</em></h2>
   </div>
   <div class="gallery-track-wrap">
     <div class="gallery-track" id="galleryTrack">
@@ -514,6 +526,7 @@ const bookingHTML = `
               <option>Sedan</option>
               <option>SUV</option>
               <option>Minivan</option>
+              <option>Van</option>
               <option>Truck</option>
               <option>Other</option>
             </select>

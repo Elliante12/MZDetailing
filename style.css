@@ -323,6 +323,8 @@ nav:hover .logo::before { transform: scaleX(1); }
   color: rgba(255,255,255,0.02);
   line-height: 1;
   pointer-events: none;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .statement-content {
@@ -2188,4 +2190,48 @@ nav:hover .logo::before { transform: scaleX(1); }
 .booking-field select,
 .booking-field textarea {
   color-scheme: dark;
+}
+
+/* ── MOBILE SPECIFIC FIXES ───────────────────────────────── */
+
+/* Hero video — contain properly on phones */
+@media (max-width: 768px) {
+  .hero video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  /* Hide ghost numbers that bleed into text */
+  .statement::before { display: none; }
+  .vehicles::before  { display: none; }
+}
+
+/* Model viewer — no pointer events on touch so page scrolls freely */
+@media (hover: none) {
+  .vehicle-preview model-viewer {
+    pointer-events: none;
+    touch-action: pan-y;
+  }
+
+  .vehicle-preview {
+    position: relative;
+  }
+
+  /* Add a subtle label so users know they can't interact */
+  .vehicle-preview::before {
+    content: 'ROTATE DISABLED ON MOBILE';
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--ff-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    z-index: 5;
+    white-space: nowrap;
+    pointer-events: none;
+  }
 }
