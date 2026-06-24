@@ -4,8 +4,8 @@
 //   set LOADER_IMAGE_SRC to your file e.g. "images/logo.png"
 // To use text: keep LOADER_USE_IMAGE = false
 
-const LOADER_USE_IMAGE = false;
-const LOADER_IMAGE_SRC = "images/logo.png";
+const LOADER_USE_IMAGE = true;
+const LOADER_IMAGE_SRC = "MZ_Detailing_logo.png";
 const LOADER_TEXT      = "MZ";
 
 const loaderHTML = `
@@ -123,37 +123,37 @@ window.addEventListener("scroll", () => {
   });
 });
 
-// ── CARD 3D TILT ─────────────────────────────────────────
-cards.forEach(card => {
-  const strength = 10;
+// // ── CARD 3D TILT ─────────────────────────────────────────
+// cards.forEach(card => {
+//   const strength = 10;
 
-  card.addEventListener("mousemove", (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateY = ((x - centerX) / centerX) * strength;
-    const rotateX = ((centerY - y) / centerY) * strength;
+//   card.addEventListener("mousemove", (e) => {
+//     const rect = card.getBoundingClientRect();
+//     const x = e.clientX - rect.left;
+//     const y = e.clientY - rect.top;
+//     const centerX = rect.width / 2;
+//     const centerY = rect.height / 2;
+//     const rotateY = ((x - centerX) / centerX) * strength;
+//     const rotateX = ((centerY - y) / centerY) * strength;
 
-    card.style.transform = `
-      perspective(1000px)
-      rotateX(${rotateX}deg)
-      rotateY(${rotateY}deg)
-      translateY(-8px)
-      scale(1.03)
-    `;
+//     card.style.transform = `
+//       perspective(1000px)
+//       rotateX(${rotateX}deg)
+//       rotateY(${rotateY}deg)
+//       translateY(-8px)
+//       scale(1.03)
+//     `;
 
-    const px = (x / rect.width) * 100;
-    const py = (y / rect.height) * 100;
-    card.style.setProperty("--mx", `${px}%`);
-    card.style.setProperty("--my", `${py}%`);
-  });
+//     const px = (x / rect.width) * 100;
+//     const py = (y / rect.height) * 100;
+//     card.style.setProperty("--mx", `${px}%`);
+//     card.style.setProperty("--my", `${py}%`);
+//   });
 
-  card.addEventListener("mouseleave", () => {
-    card.style.transform = "none";
-  });
-});
+//   card.addEventListener("mouseleave", () => {
+//     card.style.transform = "none";
+//   });
+// });
 
 // ── NAV HIDE ON SCROLL ────────────────────────────────────
 let lastScroll = 0;
@@ -549,6 +549,7 @@ const bookingHTML = `
           <textarea id="bNotes" placeholder="Pet hair, stains, specific concerns..." rows="3"></textarea>
         </div>
 
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADp52XWAKNi1o3BK" data-theme="dark"></div>
         <button type="submit" class="booking-submit" id="bookingSubmit">
           <span class="booking-submit-text">SEND REQUEST</span>
           <span class="booking-submit-arrow">→</span>
@@ -796,7 +797,25 @@ if (existingForm) {
       return;
     }
 
+    const turnstileResponse = document.querySelector('[name="cf-turnstile-response"]')?.value;
+    if (!turnstileResponse) {
+      alert("Please complete the security check.");
+      bookingSubmit.classList.remove("loading");
+      return;
+    }
+
     bookingSubmit.classList.add("loading");
+
+    const lastSubmit = localStorage.getItem("lastBookingSubmit");
+    const now = Date.now();
+
+    if (lastSubmit && now - lastSubmit < 60000) {
+      alert("Please wait a minute before submitting another request.");
+      bookingSubmit.classList.remove("loading");
+      return;
+    }
+
+    localStorage.setItem("lastBookingSubmit", now);
 
     const templateParams = {
       name:    document.getElementById("bName").value,

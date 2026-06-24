@@ -1,6 +1,6 @@
 // ── PAGE LOADER ───────────────────────────────────────────
-const LOADER_USE_IMAGE = false;
-const LOADER_IMAGE_SRC = "images/logo.png";
+const LOADER_USE_IMAGE = true;
+const LOADER_IMAGE_SRC = "MZ_Detailing_logo.png";
 const LOADER_TEXT      = "MZ";
 
 const loaderHTML = `
